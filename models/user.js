@@ -32,6 +32,7 @@ const joiRegisterSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().pattern(regEmail),
   password: Joi.string().min(6).required(),
+  repeatPassword: Joi.string().required().valid(Joi.ref("password")),
   token: Joi.string(),
 });
 
