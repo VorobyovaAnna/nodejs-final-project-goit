@@ -2,7 +2,7 @@ const { Schema, model, Types } = require("mongoose");
 const Joi = require("joi");
 
 const bookSchema = Schema({
-  id_user: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: "user",
     require: true,
@@ -37,10 +37,10 @@ const bookSchema = Schema({
 });
 
 const joiSchema = Joi.object({
-  id_user: Joi.string().required(),
+  user: Joi.string(),
   title: Joi.string(),
   author: Joi.string(),
-  publication: Joi.string().length(10).pattern(/^\d+$/).required(),
+  publication: Joi.string().length(4).pattern(/^\d+$/).required(),
   pages: Joi.number().integer().required(),
   status: Joi.string().valid("plan", "already", "now"),
   rating: Joi.number(),
