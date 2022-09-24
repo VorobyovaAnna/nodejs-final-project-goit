@@ -47,6 +47,6 @@ const joiSchema = Joi.object({
   resume: Joi.string(),
 });
 
-const Book = model("books", bookSchema);
+const Book = model("book", bookSchema);
 
-model.exports = { Book, joiSchema };
+module.exports = { Book, joiSchema };
