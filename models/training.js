@@ -42,17 +42,17 @@ const trainingSchema = Schema({
 });
 
 const joiSchema = Joi.object({
-  id_user: Joi.string().required(),
+  id_user: Joi.string(),
   start: Joi.date().required(),
   finish: Joi.date().required(),
   books: Joi.array().items({
-    id_book: Joi.string().required(),
+    id_book: Joi.string(),
     read_pages: Joi.number().integer(),
     status: Joi.boolean(),
   }),
-  id_statistics: Joi.string().required(),
+  id_statistics: Joi.string(),
 });
 
 const Training = model("training", trainingSchema);
 
-model.exports = { Training, joiSchema };
+module.exports = { Training, joiSchema };
