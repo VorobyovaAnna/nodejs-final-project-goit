@@ -29,7 +29,7 @@ const bookSchema = Schema({
     default: "plan",
   },
   rating: {
-    type: Types.Decimal128,
+    type: Number,
   },
   resume: {
     type: String,
