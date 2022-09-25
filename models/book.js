@@ -47,6 +47,11 @@ const joiSchema = Joi.object({
   resume: Joi.string(),
 });
 
+const joiSchemaReviews = Joi.object({
+  rating: Joi.number(),
+  resume: Joi.string(),
+});
+
 const Book = model("book", bookSchema);
 
-module.exports = { Book, joiSchema };
+module.exports = { Book, joiSchema, joiSchemaReviews };

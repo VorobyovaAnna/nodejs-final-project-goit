@@ -6,7 +6,7 @@ const removeById = async (req, res) => {
   const { bookId } = req.params;
   const book = await Book.findOneAndRemove({ _id: bookId, user: id });
   if (!book) {
-    throw NotFound(`Contact with id=${bookId} not found!`);
+    throw NotFound(`Book with id=${bookId} not found!`);
   }
   res.json({
     message: "Success",
