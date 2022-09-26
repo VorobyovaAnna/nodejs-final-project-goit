@@ -14,6 +14,9 @@ const login = async (req, res) => {
 
   const passCompare = bcrypt.compareSync(password, user.password);
   if (!passCompare) {
+    if (user.password === "" && user.googleId) {
+      throw new Unauthorized(`Please, use Google to login!`);
+    }
     throw new Unauthorized(`Password is wrong`);
   }
   const payload = {

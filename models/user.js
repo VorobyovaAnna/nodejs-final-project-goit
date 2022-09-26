@@ -18,9 +18,13 @@ const userSchema = Schema(
     },
     password: {
       type: String,
-      required: [true, "Set password for user"],
+      // required: [true, "Set password for user"],
     },
     token: {
+      type: String,
+      default: null,
+    },
+    googleId: {
       type: String,
       default: null,
     },
@@ -41,14 +45,6 @@ const joiLoginSchema = Joi.object({
   password: Joi.string().min(6).required(),
   token: Joi.string(),
 });
-
-// userSchema.methods.setPassword = function (password) {
-//   this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-// };
-
-// userSchema.methods.comparePassword = function (password) {
-//   return bcrypt.compareSync(password, this.password);
-// };
 
 const User = model("user", userSchema);
 
