@@ -2,12 +2,12 @@ const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
 const trainingBookSchema = Schema({
-  id_book: {
+  book: {
     type: Schema.Types.ObjectId,
     ref: "book",
     require: true,
   },
-  read_pages: {
+  readPages: {
     type: Number,
     default: 0,
   },
@@ -18,7 +18,7 @@ const trainingBookSchema = Schema({
 });
 
 const trainingSchema = Schema({
-  id_user: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: "user",
     require: true,
@@ -34,7 +34,7 @@ const trainingSchema = Schema({
   books: {
     type: [trainingBookSchema],
   },
-  id_statistics: {
+  statistics: {
     type: Schema.Types.ObjectId,
     ref: "statistics",
     require: true,
@@ -42,17 +42,24 @@ const trainingSchema = Schema({
 });
 
 const joiSchema = Joi.object({
-  id_user: Joi.string(),
+  user: Joi.string(),
   start: Joi.date().required(),
   finish: Joi.date().required(),
   books: Joi.array().items({
-    id_book: Joi.string(),
-    read_pages: Joi.number().integer(),
+    book: Joi.string(),
+    readPages: Joi.number().integer(),
     status: Joi.boolean(),
   }),
-  id_statistics: Joi.string(),
+  statistics: Joi.string(),
+});
+const joiSchemaAddTraining = Joi.object({
+  user: Joi.string(),
+  start: Joi.date().required(),
+  finish: Joi.date().required(),
+  books: Joi.array().items(Joi.string()),
+  statistics: Joi.string(),
 });
 
 const Training = model("training", trainingSchema);
 
-module.exports = { Training, joiSchema };
+module.exports = { Training, joiSchema, joiSchemaAddTraining };

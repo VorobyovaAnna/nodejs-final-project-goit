@@ -1,10 +1,11 @@
 const express = require("express");
 const { trainings: ctrl } = require("../../controllers");
 const { auth, validation, ctrlWrapper } = require("../../middlewares");
-const { joiSchema } = require("../../models/training");
+const { joiSchema, joiSchemaAddTraining } = require("../../models/training");
 
 const router = express.Router();
 
-router.post("/", auth, validation(joiSchema), ctrlWrapper(ctrl.add));
+router.get("/", auth, ctrlWrapper(ctrl.getAll));
+router.post("/", auth, validation(joiSchemaAddTraining), ctrlWrapper(ctrl.add));
 
 module.exports = router;

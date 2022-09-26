@@ -4,7 +4,7 @@ const { Book } = require("../../models");
 const add = async (req, res) => {
   const { id } = req.user;
   const { title, author } = req.body;
-  const bookAdded = await Book.findOne({ title, author, id_user: id });
+  const bookAdded = await Book.findOne({ title, author, user: id });
   if (bookAdded) {
     throw BadRequest(
       `Book with title=${title}, author=${author} has already been added!`

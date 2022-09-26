@@ -13,15 +13,15 @@ const planSchema = Schema({
 });
 
 const statisticsSchema = Schema({
-  books_amount: {
+  booksAmount: {
     type: Number,
     default: 0,
   },
-  day_amount: {
+  dayAmount: {
     type: Number,
     default: 0,
   },
-  left_books: {
+  leftBooks: {
     type: Number,
     default: 0,
   },
@@ -34,9 +34,9 @@ const statisticsSchema = Schema({
 });
 
 const joiSchema = Joi.object({
-  books_amount: Joi.number().integer(),
-  day_amount: Joi.number().integer(),
-  left_books: Joi.number().integer(),
+  bookAmount: Joi.number().integer(),
+  dayAmount: Joi.number().integer(),
+  leftBooks: Joi.number().integer(),
   plan: Joi.array().items({
     date: Joi.date().required(),
     pages: Joi.number().required(),
