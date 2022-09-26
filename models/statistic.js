@@ -1,19 +1,8 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
-const planSchema = Schema({
-  date: {
-    type: Date,
-    require: [true, "Please, enter date!"],
-  },
-  pages: {
-    type: Number,
-    require: [true, "Please, write pages you have read!"],
-  },
-});
-
 const statisticsSchema = Schema({
-  booksAmount: {
+  bookAmount: {
     type: Number,
     default: 0,
   },
@@ -26,10 +15,32 @@ const statisticsSchema = Schema({
     default: 0,
   },
   plan: {
-    type: [planSchema],
+    type: [
+      {
+        date: {
+          type: Date,
+          require: [true, "Please, enter date!"],
+        },
+        pages: {
+          type: Number,
+          require: [true, "Please, write pages you have read!"],
+        },
+      },
+    ],
   },
   result: {
-    type: [planSchema],
+    type: [
+      {
+        date: {
+          type: Date,
+          require: [true, "Please, enter date!"],
+        },
+        pages: {
+          type: Number,
+          require: [true, "Please, write pages you have read!"],
+        },
+      },
+    ],
   },
 });
 
@@ -48,8 +59,11 @@ const joiSchema = Joi.object({
 });
 
 const joiResult = Joi.object({
-  date: Joi.date().required(),
-  pages: Joi.number().required(),
+  statisticId: Joi.string().required(),
+  newStatistic: Joi.object({
+    date: Joi.date().required(),
+    pages: Joi.number().required(),
+  }),
 });
 
 const Statistic = model("statistic", statisticsSchema);

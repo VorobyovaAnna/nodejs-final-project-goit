@@ -14,13 +14,6 @@ const countDayTraining = (start, finish) => {
   const differenceDates = Math.abs(finish - start);
   return Math.round(differenceDates / (1000 * 3600 * 24));
 };
-// const booksNotRead = (books) =>
-//   books.reduce((sum, { status }) => {
-//     if (!status) {
-//       sum += 1;
-//     }
-//     return sum;
-//   }, 0);
 
 const countSumPages = (arr) => arr.reduce((sum, pages) => sum + pages, 0);
 const pagesPlan = (books) => books.map((book) => book.pages);
@@ -49,7 +42,7 @@ const add = async (req, res) => {
 
   const booksFullInformation = await Promise.all(
     books.map(async (bookId) => {
-      const [book] = await Book.find({ id_user: id, _id: bookId });
+      const [book] = await Book.find({ user: id, _id: bookId });
       if (!book) {
         throw new Error(`Not valid book's ID - ${bookId}!`);
       }
@@ -80,7 +73,7 @@ const add = async (req, res) => {
   const plan = planTraining(sumPages, planDays);
   const booksTraining = books.map((book, index) => ({
     book,
-    readPages: bookPagesPlan[index],
+    leftPages: bookPagesPlan[index],
     status: false,
   }));
 
@@ -91,7 +84,6 @@ const add = async (req, res) => {
     plan,
     result: [],
   });
-
   const statisticId = statistic._id.toString();
   if (!statistic) {
     throw BadRequest(`Check the entered data!`);
@@ -108,11 +100,6 @@ const add = async (req, res) => {
     throw BadRequest(`Check the entered data!`);
   }
 
-  // const bookStatusUpdate = await Book.findByIdAndUpdate(
-  //   { _id: bookId, user: id },
-  //   { rating, resume },
-  //   { new: true }
-  // );
   const bookStatusUpdate = await Promise.all(
     booksFullInformation.map(async ({ _id }) => {
       const book = await Book.findByIdAndUpdate(
@@ -131,21 +118,13 @@ const add = async (req, res) => {
       throw BadRequest(item.message);
     }
   });
+
   res.status(200).json({
     message: "Success",
     code: 200,
     data: {
-      user: id,
-      start: startDate,
-      finish: finishDate,
-      books: booksTraining,
-      statistics: {
-        bookAmount,
-        dayAmount,
-        leftBooks,
-        plan,
-        result: [],
-      },
+      training,
+      statistic,
     },
   });
 };

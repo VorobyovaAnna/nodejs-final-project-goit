@@ -1,22 +1,6 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
-const trainingBookSchema = Schema({
-  book: {
-    type: Schema.Types.ObjectId,
-    ref: "book",
-    require: true,
-  },
-  readPages: {
-    type: Number,
-    default: 0,
-  },
-  status: {
-    type: Boolean,
-    default: false,
-  },
-});
-
 const trainingSchema = Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -31,9 +15,23 @@ const trainingSchema = Schema({
     type: Date,
     require: true,
   },
-  books: {
-    type: [trainingBookSchema],
-  },
+  books: [
+    {
+      book: {
+        type: Schema.Types.ObjectId,
+        ref: "book",
+        require: true,
+      },
+      leftPages: {
+        type: Number,
+        default: 0,
+      },
+      status: {
+        type: Boolean,
+        default: false,
+      },
+    },
+  ],
   statistics: {
     type: Schema.Types.ObjectId,
     ref: "statistics",
@@ -47,7 +45,7 @@ const joiSchema = Joi.object({
   finish: Joi.date().required(),
   books: Joi.array().items({
     book: Joi.string(),
-    readPages: Joi.number().integer(),
+    leftPages: Joi.number().integer(),
     status: Joi.boolean(),
   }),
   statistics: Joi.string(),
