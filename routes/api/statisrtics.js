@@ -6,6 +6,11 @@ const { joiResult } = require("../../models/statistic");
 const router = express.Router();
 
 router.get("/", auth, ctrlWrapper(ctrl.getAll));
-router.post("/", auth, validation(joiResult), ctrlWrapper(ctrl.add));
+router.patch(
+  "/:statisticId",
+  auth,
+  validation(joiResult),
+  ctrlWrapper(ctrl.updateStatistic)
+);
 
 module.exports = router;

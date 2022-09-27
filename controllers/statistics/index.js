@@ -1,4 +1,4 @@
-const add = require("./add");
+const updateStatistic = require("./updateStatistic");
 const getAll = require("./getAll");
 
-module.exports = { add, getAll };
+module.exports = { updateStatistic, getAll };

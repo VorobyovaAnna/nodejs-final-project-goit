@@ -60,7 +60,7 @@ const add = async (req, res) => {
 
   const startDate = new Date(start);
   const finishDate = new Date(finish);
-  //   console.log(new Date(start).toLocaleString());
+
   if (startDate > finishDate) {
     throw BadRequest(`The final date must be later than the start date! `);
   }

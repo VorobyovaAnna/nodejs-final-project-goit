@@ -59,7 +59,6 @@ const joiSchema = Joi.object({
 });
 
 const joiResult = Joi.object({
-  statisticId: Joi.string().required(),
   newStatistic: Joi.object({
     date: Joi.date().required(),
     pages: Joi.number().required(),

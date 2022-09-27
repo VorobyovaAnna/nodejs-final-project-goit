@@ -1,6 +1,4 @@
-const e = require("express");
 const { BadRequest, NotFound, Locked } = require("http-errors");
-const { books } = require("..");
 const { Training, Book, Statistic } = require("../../models");
 
 const presentDate = (result, newDate) =>
@@ -27,8 +25,6 @@ const updateResult = (oldResult, newStatistic, dateAdded) => {
   }
   return result;
 };
-const sumPagesToRead = (result) =>
-  result.reduce((sum, { pages }) => sum + pages, 0);
 
 const changeTrainingBooksList = (books, pagesAmount) => {
   const leftPages = books.reduce((pages, infBook, index, arr) => {
@@ -58,9 +54,10 @@ const changeTrainingBooksList = (books, pagesAmount) => {
   return { leftPages, books };
 };
 
-const add = async (req, res) => {
+const updateStatistic = async (req, res) => {
   const { id } = req.user;
-  const { statisticId, newStatistic } = req.body;
+  const { newStatistic } = req.body;
+  const { statisticId } = req.params;
   const statistic = await Statistic.findOne({ _id: statisticId });
   if (!statistic) {
     throw NotFound(`Statistic with id=${statisticId} not found!`);
@@ -73,8 +70,6 @@ const add = async (req, res) => {
     user: id,
     statistics: statisticId,
   });
-  // .populate({ path: "books.book", model: "book" })
-  // .populate({ path: "statistics", model: "statistic" });
   if (!training) {
     throw BadRequest(`Check the entered data(id-${statisticId}!`);
   }
@@ -90,14 +85,16 @@ const add = async (req, res) => {
   const booksStatusUpdate = trainingListBook.filter(
     (books) => books.status && books.book
   );
-  const leftBooks = statistic.leftBooks - booksStatusUpdate.length;
+  console.log(statistic.leftBooks);
+  console.log(booksStatusUpdate.length);
+  const leftBooks = trainingListBook.length - booksStatusUpdate.length;
 
   const updateStatistic = await Statistic.findByIdAndUpdate(
     { _id: statisticId },
     { result: newResult, leftBooks },
     { new: true }
   );
-  const updateTraining = await Training.findByIdAndUpdate(
+  await Training.findByIdAndUpdate(
     { _id: training._id.toString() },
     { books: trainingListBook },
     { new: true }
@@ -114,14 +111,14 @@ const add = async (req, res) => {
     }
     return bookUpdate;
   });
+
   res.status(200).json({
     message: "Success",
     code: 200,
     data: {
-      training: updateTraining,
       statistics: updateStatistic,
     },
   });
 };
 
-module.exports = add;
+module.exports = updateStatistic;
