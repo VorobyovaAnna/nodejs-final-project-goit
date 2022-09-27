@@ -8,17 +8,17 @@ const presentDate = (result, newDate) =>
       res.date.getMonth() === new Date(newDate).getMonth() &&
       res.date
   );
-const updateResult = (oldResult, newStatistic, dateAdded) => {
+const updateResult = (oldResult, newDate, newPages, dateAdded) => {
   let result;
   if (!dateAdded) {
-    result = [...oldResult, { ...newStatistic }];
+    result = [...oldResult, { newDate, newPages }];
   } else {
     result = oldResult.map(({ date, pages }) => {
       if (
-        date.getDate() === new Date(newStatistic.date).getDate() &&
-        date.getMonth() === new Date(newStatistic.date).getMonth()
+        date.getDate() === new Date(newDate).getDate() &&
+        date.getMonth() === new Date(newPages).getMonth()
       ) {
-        return { date, pages: pages + newStatistic.pages };
+        return { date, pages: pages + newPages };
       }
       return { date, pages };
     });
@@ -56,14 +56,14 @@ const changeTrainingBooksList = (books, pagesAmount) => {
 
 const updateStatistic = async (req, res) => {
   const { id } = req.user;
-  const { newStatistic } = req.body;
+  const { date, pages } = req.body;
   const { statisticId } = req.params;
   const statistic = await Statistic.findOne({ _id: statisticId });
   if (!statistic) {
     throw NotFound(`Statistic with id=${statisticId} not found!`);
   }
-  const dateAdded = presentDate(statistic.result, newStatistic.date);
-  const newResult = updateResult(statistic.result, newStatistic, dateAdded);
+  const dateAdded = presentDate(statistic.result, date);
+  const newResult = updateResult(statistic.result, date, pages, dateAdded);
   console.log(newResult);
 
   const training = await Training.findOne({
@@ -77,7 +77,7 @@ const updateStatistic = async (req, res) => {
 
   const { leftPages, books: trainingListBook } = changeTrainingBooksList(
     books,
-    newStatistic.pages
+    pages
   );
   if (leftPages > 0) {
     throw Locked("All books have been already read");
