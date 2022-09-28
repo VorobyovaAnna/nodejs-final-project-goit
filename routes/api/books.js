@@ -10,7 +10,7 @@ router.get("/", auth, ctrlWrapper(ctrl.getAll));
 router.get("/:bookId", auth, ctrlWrapper(ctrl.getById));
 router.delete("/:bookId", auth, ctrlWrapper(ctrl.removeById));
 router.patch(
-  "/:bookId/reviews",
+  "/:bookId/review",
   auth,
   validation(joiSchemaReviews),
   ctrlWrapper(ctrl.updateReviews)

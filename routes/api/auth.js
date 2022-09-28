@@ -8,7 +8,8 @@ const router = express.Router();
 router.post(
   "/register",
   validation(joiRegisterSchema),
-  ctrlWrapper(ctrl.register)
+  ctrlWrapper(ctrl.register),
+  ctrlWrapper(ctrl.login)
 );
 
 router.post("/login", validation(joiLoginSchema), ctrlWrapper(ctrl.login));
