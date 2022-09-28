@@ -1,8 +1,8 @@
-const { Schema, model, Types } = require("mongoose");
+const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
 const bookSchema = Schema({
-  id_user: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: "user",
     require: true,
@@ -29,7 +29,7 @@ const bookSchema = Schema({
     default: "plan",
   },
   rating: {
-    type: Types.Decimal128,
+    type: Number,
   },
   resume: {
     type: String,
@@ -37,16 +37,21 @@ const bookSchema = Schema({
 });
 
 const joiSchema = Joi.object({
-  id_user: Joi.string().required(),
+  user: Joi.string(),
   title: Joi.string(),
   author: Joi.string(),
-  publication: Joi.string().length(10).pattern(/^\d+$/).required(),
+  publication: Joi.string().length(4).pattern(/^\d+$/).required(),
   pages: Joi.number().integer().required(),
   status: Joi.string().valid("plan", "already", "now"),
   rating: Joi.number(),
   resume: Joi.string(),
 });
 
-const Book = model("books", bookSchema);
+const joiSchemaReviews = Joi.object({
+  rating: Joi.number(),
+  resume: Joi.string(),
+});
 
-model.exports = { Book, joiSchema };
+const Book = model("book", bookSchema);
+
+module.exports = { Book, joiSchema, joiSchemaReviews };
