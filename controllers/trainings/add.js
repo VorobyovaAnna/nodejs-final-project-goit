@@ -124,7 +124,6 @@ const add = async (req, res) => {
     code: 200,
     data: {
       training,
-      statistic,
     },
   });
 };
