@@ -1,7 +1,7 @@
 const express = require("express");
 const { trainings: ctrl } = require("../../controllers");
 const { auth, validation, ctrlWrapper } = require("../../middlewares");
-const { joiSchema, joiSchemaAddTraining } = require("../../models/training");
+const {  joiSchemaAddTraining } = require("../../models/training");
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.0.3",
   "info": {
     "version": "2.0.2",
     "title": "Project swagger",
@@ -9,14 +9,20 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:3000" },{"url":"https://heroku"}],
+  "servers": [
+    {
+      "url": "http://localhost:3001"
+    },
+    {
+      "url": "https://nodejs-final-project-goit.herokuapp.com"
+    }
+  ],
   "tags": [
     {
       "name": "Auth",
       "description": "Authorization endpoints"
-    }, {
+    },
+    {
       "name": "Books",
       "description": "Library endpoints"
     }
@@ -24,12 +30,10 @@
   "paths": {
     "/api/auth/register": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "User registration",
-
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        
         "requestBody": {
           "description": "Registration's object",
           "required": true,
@@ -42,7 +46,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Successful operation",
             "content": {
               "application/json": {
@@ -54,57 +58,403 @@
           },
           "400": {
             "description": "Bad request (invalid request body)",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponseError"
+                }
+              }
+            }
           },
           "409": {
-            "description": "Provided email already exists",
-            "content": {}
+            "description": "Provided email already exists"
           }
         }
       }
-    }
-  },
-  "components": {
-    "schemas": {
-      "RegistrationRequest": {
-        "type": "object",
-        "required": ["email", "password"],
-        "properties": {
-          "email": {
+    },
+    "/api/auth/current": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User information",
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content":{"application/json":{"schema":{"type":"object","properties":{"message":{"example":"invalid signature"}}}}}
+          },
+          "404": {
+            "description": "Not found",
+            "content":{"application/json":{"schema":{"type":"object","properties":{"message":{"example":"invalid signature"}}}}}
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User login",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Login object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {"email": {
             "type": "string",
             "description": "User's email",
             "format": "email"
           },
           "password": {
             "type": "string",
-            "description": "User's password",
-            "example": "qwerty123"
+            "description":"Users password"
+          }
+        }}}}},
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Password length is not correct",
+                      "example": "\"password\" length must be at least 6 characters long"
+          }
+        }
+      }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad request (invalid request body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message",
+                      "example": "Email or password is wrong or email isn't verify"
+          }
+        }
+      }
+              }
+            }
+          },
+          "409": {
+            "description": "Provided email already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message",
+                      "example": "Provided email already exists"
+          }
+        }
+      }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User logout",
+        "description": "Logout current user (invalide his token)",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "401": {
+            "description": "Unsuccessful logout",
+            "content":{"application/json":{"schema":{"type":"object","properties":{"message":{"example":"Not authorized"}}}}}
+          }
+        }
+      }
+    },
+    "/api/auth/google": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Google account register or login",
+        "description": "Frontend should receive user's name, email, token as query parameters"
+      }
+    },
+  "/api/books/": {
+      "post": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Add book into library",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Book object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookAddRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookAddResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content":{"application/json":{"schema":{"type":"object","properties":{"message":{"example":"Book with title=Shining, author=Stephen King has already been added!"}}}}}
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Add book into library",
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content":{"application/json":
+            {"example":{"message": "Success",
+    "code": 200,
+    "data": {
+        "books": [
+            {
+                "_id": "63360b66bfaa8472c16178da",
+                "user": {
+                    "_id": "6335e2e166c11e826954f4bd",
+                    "name": "Samuel",
+                    "email": "Samuel@gmail.com"
+                },
+                "title": "Shining",
+                "author": "Stephe King",
+                "publication": "1979",
+                "pages": 221,
+                "status": "plan",
+                "__v": 0
+            }
+        ]
+    }}}}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content":{"application/json":{"example":{"message":"Not authorized"}}}
+          }
+        }
+      }
+    }},
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "password",
+          "name",
+          "repeatPassword"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "John"
+          },
+          "password": {
+            "type": "string"
+          },
+          "repeatPassword": {
+            "type": "string"
           }
         }
       },
       "RegistrationResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "email": {
-              "type": "string",
-              "description": "User's email",
-              "format": "email"
-            },
-            "userId": {
-              "type": "number",
-              "description": "User's id",
-              "example": "32143232436545474"
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "format": "email"
+                  }
+                }
+              }
             }
           }
         },
-        "example": [
-          { "email": "1@gmail.com", "userId": "1" },
-          { "email": "2@gmail.com", "userId": "2" }
-        ]
-      }
-    },
+        "example": {
+          "message": "success",
+          "code": 200,
+          "data": {
+            "token": "Xsf4h5HJwKJwJc",
+            "user": {
+              "name": "Jack",
+              "email": "Jack@gmail.com"
+            }
+          }
+        }
+      },
+      "RegistrationResponseError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "\"name\"\"email\"password\"repeatPassword\" is required"
+          }
+        }
+      },
+      "BookAddRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "author",
+          "publication",
+          "pages"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Book's title"
+          },
+          "name": {
+            "author": "string",
+            "description": "Author's name"
+          },
+          "publication": {
+            "type": "string"
+          },
+          "pages": {
+            "type": "integer"
+          },
+          "status":{"type":"string",
+          "enum": ["plan", "already", "now"]
+          },"rating":{"type":"number"},
+          "resume":{"type":"string"}
+        }
+      },
+      "BookAddResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "book": {
+                "type": "object",
+                "properties":{"user":{"type":"string"},"title":{"type":"string"},
+                              "author":{"type":"string"},"publication":{"type":"string"},
+                              "pages":{"type":"integer"},"status":{"type":"string"},
+                            "_id":{"type":"string"},"__v":{"type":"string"}}
+              }
+            }
+          }
+        }
+      },
+        "example": {
+          "message": "Success",
+          "code": 200,
+          "data": {
+            "book": {
+              "user": "6335e2e166c11e826954f4bd",
+              "title": "Shining",
+              "author": "Stephe King",
+              "publication": "1979",
+              "pages": 221,
+              "status": "plan",
+              "_id": "63360b66bfaa8472c16178da",
+              "__v": 0
+            }
+          }
+        }
+      },
+      
     "securitySchemes": {
       "Bearer": {
         "type": "http",
