@@ -9,7 +9,7 @@ const swaggerDocument = require("./swagger.json");
 const authRouter = require("./routes/api/auth");
 const bookRouter = require("./routes/api/books");
 const trainingRouter = require("./routes/api/trainings");
-const statisticRouter = require("./routes/api/statisrtics");
+const statisticRouter = require("./routes/api/statistics");
 
 const app = express();
 

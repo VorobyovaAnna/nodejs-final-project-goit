@@ -37,7 +37,6 @@ const bookSchema = Schema({
 });
 
 const joiSchema = Joi.object({
-  user: Joi.string(),
   title: Joi.string(),
   author: Joi.string(),
   publication: Joi.string().length(4).pattern(/^\d+$/).required(),

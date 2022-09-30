@@ -9,12 +9,11 @@ const register = async (req, res, next) => {
     throw new Conflict(`User with ${email} already exist`);
   }
   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-  const newUser = await User.create({
+  await User.create({
     name,
     email,
     password: hashPassword,
   });
-  console.log(newUser);
   res.status(201);
   next();
 };

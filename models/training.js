@@ -40,7 +40,6 @@ const trainingSchema = Schema({
 });
 
 const joiSchema = Joi.object({
-  user: Joi.string(),
   start: Joi.date().required(),
   finish: Joi.date().required(),
   books: Joi.array().items({
@@ -51,7 +50,6 @@ const joiSchema = Joi.object({
   statistics: Joi.string(),
 });
 const joiSchemaAddTraining = Joi.object({
-  user: Joi.string(),
   start: Joi.date().required(),
   finish: Joi.date().required(),
   books: Joi.array().items(Joi.string()),
