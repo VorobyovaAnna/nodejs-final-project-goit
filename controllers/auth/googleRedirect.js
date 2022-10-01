@@ -38,20 +38,20 @@ const googleRedirect = async (req, res) => {
   };
   const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "1h" });
   await User.findByIdAndUpdate(user._id, { token, googleId });
-  user = await User.findOne({ email });
-  res.status(200).json({
-    message: "success",
-    code: 200,
-    data: {
-      token,
-      user: {
-        name,
-        email,
-      },
-    },
-  });
+  // user = await User.findOne({ email });
+  // res.status(200).json({
+  //   message: "success",
+  //   code: 200,
+  //   data: {
+  //     token,
+  //     user: {
+  //       name,
+  //       email,
+  //     },
+  //   },
+  // });
   return res.redirect(
-    `${process.env.FRONTEND_URL}/google-redirect/?token=${user.token}&name=${user.name}&email=${user.email}`
+    `${process.env.FRONTEND_URL}/google-redirect/?token=${token}&name=${user.name}&email=${user.email}`
   );
 };
 
