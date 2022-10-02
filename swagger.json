@@ -25,6 +25,14 @@
     {
       "name": "Books",
       "description": "Library endpoints"
+    },
+    {
+      "name": "Training",
+      "description": "Training endpoints"
+    },
+    {
+      "name": "Statistics",
+      "description": "Statistics"
     }
   ],
   "paths": {
@@ -78,7 +86,11 @@
           "Auth"
         ],
         "summary": "User information",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -92,11 +104,33 @@
           },
           "401": {
             "description": "Unauthorized",
-            "content":{"application/json":{"schema":{"type":"object","properties":{"message":{"example":"invalid signature"}}}}}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "example": "invalid signature"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Not found",
-            "content":{"application/json":{"schema":{"type":"object","properties":{"message":{"example":"invalid signature"}}}}}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "example": "invalid signature"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -123,16 +157,21 @@
                   "email",
                   "password"
                 ],
-                "properties": {"email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "description":"Users password"
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Users password"
+                  }
+                }
+              }
+            }
           }
-        }}}}},
+        },
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -155,9 +194,9 @@
                       "type": "string",
                       "description": "Password length is not correct",
                       "example": "\"password\" length must be at least 6 characters long"
-          }
-        }
-      }
+                    }
+                  }
+                }
               }
             }
           },
@@ -172,9 +211,9 @@
                       "type": "string",
                       "description": "Error message",
                       "example": "Email or password is wrong or email isn't verify"
-          }
-        }
-      }
+                    }
+                  }
+                }
               }
             }
           },
@@ -189,9 +228,9 @@
                       "type": "string",
                       "description": "Error message",
                       "example": "Provided email already exists"
-          }
-        }
-      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -216,7 +255,18 @@
           },
           "401": {
             "description": "Unsuccessful logout",
-            "content":{"application/json":{"schema":{"type":"object","properties":{"message":{"example":"Not authorized"}}}}}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -227,16 +277,25 @@
           "Auth"
         ],
         "summary": "Google account register or login",
-        "description": "Frontend should receive user's name, email, token as query parameters"
+        "description": "Frontend should receive user's name, email, token as query parameters",
+        "responses": {
+          "309": {
+            "description": "Redirect to google"
+          }
+        }
       }
     },
-  "/api/books/": {
+    "/api/books/": {
       "post": {
         "tags": [
           "Books"
         ],
         "summary": "Add book into library",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "requestBody": {
           "description": "Book object",
           "required": true,
@@ -261,7 +320,18 @@
           },
           "400": {
             "description": "Bad request (invalid request body)",
-            "content":{"application/json":{"schema":{"type":"object","properties":{"message":{"example":"Book with title=Shining, author=Stephen King has already been added!"}}}}}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "example": "Book with title=Shining, author=Stephen King has already been added!"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -269,40 +339,616 @@
         "tags": [
           "Books"
         ],
-        "summary": "Add book into library",
-        "security": [{ "Bearer": [] }],
+        "summary": "Get all books from  library",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation",
-            "content":{"application/json":
-            {"example":{"message": "Success",
-    "code": 200,
-    "data": {
-        "books": [
-            {
-                "_id": "63360b66bfaa8472c16178da",
-                "user": {
-                    "_id": "6335e2e166c11e826954f4bd",
-                    "name": "Samuel",
-                    "email": "Samuel@gmail.com"
-                },
-                "title": "Shining",
-                "author": "Stephe King",
-                "publication": "1979",
-                "pages": 221,
-                "status": "plan",
-                "__v": 0
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Success",
+                  "code": 200,
+                  "data": {
+                    "books": [
+                      {
+                        "_id": "63360b66bfaa8472c16178da",
+                        "user": {
+                          "_id": "6335e2e166c11e826954f4bd",
+                          "name": "Samuel",
+                          "email": "Samuel@gmail.com"
+                        },
+                        "title": "Shining",
+                        "author": "Stephe King",
+                        "publication": "1979",
+                        "pages": 221,
+                        "status": "plan",
+                        "__v": 0
+                      }
+                    ]
+                  }
+                }
+              }
             }
-        ]
-    }}}}
           },
           "401": {
             "description": "Not authorized",
-            "content":{"application/json":{"example":{"message":"Not authorized"}}}
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Not authorized"
+                }
+              }
+            }
           }
         }
       }
-    }},
+    },
+    "/api/books/{bookId}": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Get one book from library",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bookId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Book id"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Success",
+                  "code": 200,
+                  "data": {
+                    "book": {
+                      "_id": "63360b66bfaa8472c16178da",
+                      "user": "6335e2e166c11e826954f4bd",
+                      "title": "The Shining",
+                      "author": "Stephen King",
+                      "publication": "1977",
+                      "pages": 447,
+                      "status": "plan",
+                      "__v": 0,
+                      "rating": 10,
+                      "resume": "Very scary"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "invalid signature"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Book with id=63336b2725832bddeead4d10 not found!"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Delete one book from library",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bookId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Book id"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Success",
+                  "code": 200,
+                  "data": {
+                    "book": {
+                      "_id": "63360b66bfaa8472c16178da",
+                      "user": "6335e2e166c11e826954f4bd",
+                      "title": "The Shining",
+                      "author": "Stephen King",
+                      "publication": "1977",
+                      "pages": 447,
+                      "status": "plan",
+                      "__v": 0,
+                      "rating": 10,
+                      "resume": "Very scary"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "invalid signature"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Book with id=63336b2725832bddeead4d10 not found!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{bookId}/review": {
+      "patch": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Change or add book's rating or resume",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bookId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Book id"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Book's rating resume object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "example": {
+                  "rating": 10,
+                  "resume": "Very cool"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Success",
+                  "code": 200,
+                  "data": {
+                    "book": {
+                      "_id": "63360b66bfaa8472c16178da",
+                      "user": "6335e2e166c11e826954f4bd",
+                      "title": "The Shining",
+                      "author": "Stephen King",
+                      "publication": "1977",
+                      "pages": 447,
+                      "status": "plan",
+                      "__v": 0,
+                      "rating": 10,
+                      "resume": "Very scary"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "invalid signature"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Book with id=63336b2725832bddeead4d10 not found!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trainings/": {
+      "post": {
+        "tags": [
+          "Training"
+        ],
+        "summary": "Adds new training",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Training info object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingAddRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Success",
+                  "code": 200,
+                  "data": {
+                    "training": {
+                      "user": "63398135caca80a8c8ea2acc",
+                      "start": "2022-10-09T21:00:00.000Z",
+                      "finish": "2022-10-14T21:00:00.000Z",
+                      "books": [
+                        {
+                          "book": "6339822acaca80a8c8ea2ad4",
+                          "leftPages": 400,
+                          "status": false,
+                          "_id": "63398812caca80a8c8ea2af1"
+                        },
+                        {
+                          "book": null,
+                          "leftPages": 400,
+                          "status": false,
+                          "_id": "63398812caca80a8c8ea2af2"
+                        }
+                      ],
+                      "statistics": "63398812caca80a8c8ea2ae8",
+                      "_id": "63398812caca80a8c8ea2af0",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "finish must be a valid date",
+                  "_message": "You are reading book with ID- 6339822acaca80a8c8ea2ad4!"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Training"
+        ],
+        "summary": "Gets training",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Success",
+                  "code": 200,
+                  "data": {
+                    "training": {
+                      "user": "63398135caca80a8c8ea2acc",
+                      "start": "2022-10-09T21:00:00.000Z",
+                      "finish": "2022-10-14T21:00:00.000Z",
+                      "books": [
+                        {
+                          "book": "6339822acaca80a8c8ea2ad4",
+                          "leftPages": 400,
+                          "status": false,
+                          "_id": "63398812caca80a8c8ea2af1"
+                        },
+                        {
+                          "book": null,
+                          "leftPages": 400,
+                          "status": false,
+                          "_id": "63398812caca80a8c8ea2af2"
+                        }
+                      ],
+                      "statistics": "63398812caca80a8c8ea2ae8",
+                      "_id": "63398812caca80a8c8ea2af0",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Not authorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/statistics/{statisticId}": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "Gets statistics by Id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "statisticId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Statistic id"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Success",
+                  "code": 200,
+                  "data": {
+                    "statistic": {
+                      "_id": "63398812caca80a8c8ea2ae8",
+                      "bookAmount": 4,
+                      "dayAmount": 5,
+                      "leftBooks": 4,
+                      "plan": [
+                        {
+                          "date": "2022-10-09T21:00:00.000Z",
+                          "pages": 266,
+                          "_id": "63398812caca80a8c8ea2ae9"
+                        },
+                        {
+                          "date": "2022-10-10T21:00:00.000Z",
+                          "pages": 266,
+                          "_id": "63398812caca80a8c8ea2aea"
+                        }
+                      ],
+                      "result": [
+                        {
+                          "date": "2022-10-19T21:00:00.000Z",
+                          "pages": 266
+                        }
+                      ],
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Not authorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "Updates statistics",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "statisticId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Statistic id"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Update statistics object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "pages"
+                ],
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "description": "New date"
+                  },
+                  "pages": {
+                    "type": "number",
+                    "description": "New pages number"
+                  }
+                },
+                "example": {
+                  "date": "10.20.2022",
+                  "pages": 25
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Success",
+                  "code": 200,
+                  "data": {
+                    "statistic": {
+                      "_id": "63398812caca80a8c8ea2ae8",
+                      "bookAmount": 4,
+                      "dayAmount": 5,
+                      "leftBooks": 4,
+                      "plan": [
+                        {
+                          "date": "2022-10-09T21:00:00.000Z",
+                          "pages": 266,
+                          "_id": "63398812caca80a8c8ea2ae9"
+                        },
+                        {
+                          "date": "2022-10-10T21:00:00.000Z",
+                          "pages": 266,
+                          "_id": "63398812caca80a8c8ea2aea"
+                        }
+                      ],
+                      "result": [
+                        {
+                          "date": "2022-10-10T21:00:00.000Z",
+                          "pages": 4
+                        }
+                      ],
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Not authorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Statistic with id=63398812caca80a8c8ea2af0 not found!"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "components": {
     "schemas": {
       "RegistrationRequest": {
@@ -399,7 +1045,7 @@
             "description": "Book's title"
           },
           "name": {
-            "author": "string",
+            "type": "string",
             "description": "Author's name"
           },
           "publication": {
@@ -408,10 +1054,20 @@
           "pages": {
             "type": "integer"
           },
-          "status":{"type":"string",
-          "enum": ["plan", "already", "now"]
-          },"rating":{"type":"number"},
-          "resume":{"type":"string"}
+          "status": {
+            "type": "string",
+            "enum": [
+              "plan",
+              "already",
+              "now"
+            ]
+          },
+          "rating": {
+            "type": "number"
+          },
+          "resume": {
+            "type": "string"
+          }
         }
       },
       "BookAddResponse": {
@@ -428,15 +1084,36 @@
             "properties": {
               "book": {
                 "type": "object",
-                "properties":{"user":{"type":"string"},"title":{"type":"string"},
-                              "author":{"type":"string"},"publication":{"type":"string"},
-                              "pages":{"type":"integer"},"status":{"type":"string"},
-                            "_id":{"type":"string"},"__v":{"type":"string"}}
+                "properties": {
+                  "user": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "author": {
+                    "type": "string"
+                  },
+                  "publication": {
+                    "type": "string"
+                  },
+                  "pages": {
+                    "type": "integer"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "_id": {
+                    "type": "string"
+                  },
+                  "__v": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
-        }
-      },
+        },
         "example": {
           "message": "Success",
           "code": 200,
@@ -444,8 +1121,8 @@
             "book": {
               "user": "6335e2e166c11e826954f4bd",
               "title": "Shining",
-              "author": "Stephe King",
-              "publication": "1979",
+              "author": "Stephen King",
+              "publication": "1977",
               "pages": 221,
               "status": "plan",
               "_id": "63360b66bfaa8472c16178da",
@@ -454,7 +1131,44 @@
           }
         }
       },
-      
+      "TrainingAddRequest": {
+        "type": "object",
+        "required": [
+          "start",
+          "finish"
+        ],
+        "properties": {
+          "start": {
+            "type": "string",
+            "description": "Start date"
+          },
+          "finish": {
+            "type": "string",
+            "description": "Finish date"
+          },
+          "books": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "statistics": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "start": "10.10.2022",
+          "finish": "15.10.2022",
+          "books": [
+            "6339822acaca80a8c8ea2ad4",
+            "63398279caca80a8c8ea2ad8",
+            "63398292caca80a8c8ea2adc",
+            "633982accaca80a8c8ea2ae0"
+          ],
+          "statistics": 123456789
+        }
+      }
+    },
     "securitySchemes": {
       "Bearer": {
         "type": "http",

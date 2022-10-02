@@ -5,7 +5,7 @@ const { joiResult } = require("../../models/statistic");
 
 const router = express.Router();
 
-router.get("/", auth, ctrlWrapper(ctrl.getAll));
+router.get("/:statisticId", auth, ctrlWrapper(ctrl.getById));
 router.patch(
   "/:statisticId",
   auth,
