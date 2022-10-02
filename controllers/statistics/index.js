@@ -1,4 +1,4 @@
 const updateStatistic = require("./updateStatistic");
-const getAll = require("./getAll");
+const getById = require("./getById");
 
-module.exports = { updateStatistic, getAll };
+module.exports = { updateStatistic, getById };
