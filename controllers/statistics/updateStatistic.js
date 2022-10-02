@@ -11,7 +11,7 @@ const presentDate = (result, newDate) =>
 const updateResult = (oldResult, newDate, newPages, dateAdded) => {
   let result;
   if (!dateAdded) {
-    result = [...oldResult, { newDate, newPages }];
+    result = [...oldResult, { date: newDate, pages: newPages }];
   } else {
     result = oldResult.map(({ date, pages }) => {
       if (
