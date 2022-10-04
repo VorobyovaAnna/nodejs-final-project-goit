@@ -1,8 +1,8 @@
 const { Statistic } = require("../../models");
 const { NotFound } = require("http-errors");
 
-const getById = async (req, res) => {
-  const { statisticId } = req.params;
+const getAll = async (req, res) => {
+  const { statistics: statisticId } = req.body;
   const statistic = await Statistic.findOne({ _id: statisticId });
   if (!statistic) {
     throw NotFound(`Statistic with id=${statisticId} not found!`);
@@ -16,4 +16,4 @@ const getById = async (req, res) => {
   });
 };
 
-module.exports = getById;
+module.exports = getAll;
