@@ -4,8 +4,8 @@ const { Training, Book, Statistic } = require("../../models");
 const presentDate = (result, newDate) =>
   result.find(
     (res) =>
-      res.date.getDate() === new Date(newDate).getDate() &&
-      res.date.getMonth() === new Date(newDate).getMonth() &&
+      res.date.getDate() <= new Date(newDate).getDate() &&
+      res.date.getMonth() <= new Date(newDate).getMonth() &&
       res.date
   );
 const updateResult = (oldResult, newDate, newPages, dateAdded) => {

@@ -1,13 +1,13 @@
 const { Statistic } = require("../../models");
 const { NotFound } = require("http-errors");
 
-const getById = async (req, res) => {
+const removeById = async (req, res) => {
   const { statisticId } = req.params;
-  const statistic = await Statistic.findOne({ _id: statisticId });
+  const statistic = await Statistic.findOneAndRemove({ _id: statisticId });
   if (!statistic) {
-    throw NotFound(`Statistic with id=${statisticId} not found!`);
+    throw NotFound(`Book with id=${statisticId} not found!`);
   }
-  res.status(200).json({
+  res.json({
     message: "Success",
     code: 200,
     data: {
@@ -16,4 +16,4 @@ const getById = async (req, res) => {
   });
 };
 
-module.exports = getById;
+module.exports = removeById;

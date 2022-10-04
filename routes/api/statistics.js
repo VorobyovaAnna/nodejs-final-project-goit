@@ -12,5 +12,6 @@ router.patch(
   validation(joiResult),
   ctrlWrapper(ctrl.updateStatistic)
 );
+router.delete("/:statisticId", auth, ctrlWrapper(ctrl.removeById));
 
 module.exports = router;

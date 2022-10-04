@@ -39,7 +39,10 @@ const planTraining = (sumPages, planDays) => {
 const add = async (req, res) => {
   const { id } = req.user;
   const { start, finish, books } = req.body;
-
+  const activeTraining = await Training.findOne({ user: id });
+  if (activeTraining) {
+    throw BadRequest(`You already have active training!`);
+  }
   const booksFullInformation = await Promise.all(
     books.map(async (bookId) => {
       const [book] = await Book.find({ user: id, _id: bookId });
