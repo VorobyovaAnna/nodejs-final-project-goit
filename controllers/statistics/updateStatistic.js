@@ -18,7 +18,7 @@ const updateResult = (oldResult, newDate, newPages, dateAdded) => {
         date.getDate() === new Date(newDate).getDate() &&
         date.getMonth() === new Date(newPages).getMonth()
       ) {
-        return { date, pages: pages + newPages };
+        return { date, pages: Number(pages) + Number(newPages) };
       }
       return { date, pages };
     });
@@ -28,21 +28,21 @@ const updateResult = (oldResult, newDate, newPages, dateAdded) => {
 
 const changeTrainingBooksList = (books, pagesAmount) => {
   const leftPages = books.reduce((pages, infBook, index, arr) => {
-    if (pages === 0) {
+    if (Number(pages) === 0) {
       return pages;
-    } else if (infBook.leftPages === 0) {
+    } else if (Number(infBook.leftPages) === 0) {
       return pages;
-    } else if (pages - infBook.leftPages === 0) {
+    } else if (Number(pages) - Number(infBook.leftPages) === 0) {
       arr[index].leftPages = 0;
       arr[index].status = true;
       pages = 0;
       return pages;
-    } else if (pages - infBook.leftPages < 0) {
+    } else if (Number(pages) - Number(infBook.leftPages) < 0) {
       arr[index].leftPages -= pages;
       arr[index].status = false;
       pages = 0;
       return pages;
-    } else if (pages - infBook.leftPages > 0) {
+    } else if (Number(pages) - Number(infBook.leftPages) > 0) {
       arr[index].leftPages = 0;
       arr[index].status = true;
       pages = pages - infBook.leftPages;
@@ -64,7 +64,6 @@ const updateStatistic = async (req, res) => {
   }
   const dateAdded = presentDate(statistic.result, date);
   const newResult = updateResult(statistic.result, date, pages, dateAdded);
-  console.log(newResult);
 
   const training = await Training.findOne({
     user: id,
@@ -73,8 +72,8 @@ const updateStatistic = async (req, res) => {
   if (!training) {
     throw BadRequest(`Check the entered data(id-${statisticId}!`);
   }
+
   if (
-    training.start.getDate() > new Date(date).getDate() ||
     training.finish.getDate() < new Date(date).getDate() ||
     training.start.getMonth() > new Date(date).getMonth() ||
     training.finish.getMonth() < new Date(date).getMonth() ||
@@ -97,8 +96,6 @@ const updateStatistic = async (req, res) => {
   const booksStatusUpdate = trainingListBook.filter(
     (books) => books.status && books.book
   );
-  console.log(statistic.leftBooks);
-  console.log(booksStatusUpdate.length);
   const leftBooks = trainingListBook.length - booksStatusUpdate.length;
 
   const updateStatistic = await Statistic.findByIdAndUpdate(
