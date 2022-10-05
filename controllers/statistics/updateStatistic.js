@@ -4,8 +4,8 @@ const { Training, Book, Statistic } = require("../../models");
 const presentDate = (result, newDate) =>
   result.find(
     (res) =>
-      res.date.getDate() <= new Date(newDate).getDate() &&
-      res.date.getMonth() <= new Date(newDate).getMonth() &&
+      res.date.getDate() === new Date(newDate).getDate() &&
+      res.date.getMonth() === new Date(newDate).getMonth() &&
       res.date
   );
 const updateResult = (oldResult, newDate, newPages, dateAdded) => {
@@ -64,7 +64,6 @@ const updateStatistic = async (req, res) => {
   }
   const dateAdded = presentDate(statistic.result, date);
   const newResult = updateResult(statistic.result, date, pages, dateAdded);
-  console.log(newResult);
 
   const training = await Training.findOne({
     user: id,
@@ -72,6 +71,19 @@ const updateStatistic = async (req, res) => {
   });
   if (!training) {
     throw BadRequest(`Check the entered data(id-${statisticId}!`);
+  }
+
+  if (
+    training.start.getDate() > new Date(date).getDate() ||
+    training.finish.getDate() < new Date(date).getDate() ||
+    training.start.getMonth() > new Date(date).getMonth() ||
+    training.finish.getMonth() < new Date(date).getMonth() ||
+    training.start.getFullYear() > new Date(date).getFullYear() ||
+    training.finish.getFullYear() < new Date(date).getFullYear()
+  ) {
+    throw BadRequest(
+      `The date entered must be in a range start-${training.start} and finish-${training.finish}`
+    );
   }
   const { books } = training;
 
@@ -85,8 +97,7 @@ const updateStatistic = async (req, res) => {
   const booksStatusUpdate = trainingListBook.filter(
     (books) => books.status && books.book
   );
-  console.log(statistic.leftBooks);
-  console.log(booksStatusUpdate.length);
+
   const leftBooks = trainingListBook.length - booksStatusUpdate.length;
 
   const updateStatistic = await Statistic.findByIdAndUpdate(
