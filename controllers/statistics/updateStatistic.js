@@ -73,6 +73,18 @@ const updateStatistic = async (req, res) => {
   if (!training) {
     throw BadRequest(`Check the entered data(id-${statisticId}!`);
   }
+  if (
+    training.start.getDate() > new Date(date).getDate() ||
+    training.finish.getDate() < new Date(date).getDate() ||
+    training.start.getMonth() > new Date(date).getMonth() ||
+    training.finish.getMonth() < new Date(date).getMonth() ||
+    training.start.getFullYear() > new Date(date).getFullYear() ||
+    training.finish.getFullYear() < new Date(date).getFullYear()
+  ) {
+    throw BadRequest(
+      `The date entered must be in a range start-${training.start} and finish-${training.finish}`
+    );
+  }
   const { books } = training;
 
   const { leftPages, books: trainingListBook } = changeTrainingBooksList(
