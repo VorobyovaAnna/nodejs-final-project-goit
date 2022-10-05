@@ -10,15 +10,16 @@ const presentDate = (result, newDate) =>
   );
 const updateResult = (oldResult, newDate, newPages, dateAdded) => {
   let result;
-  if (!dateAdded) {
+  const newDateParse = new Date(newDate);
+  if (dateAdded === undefined) {
     result = [...oldResult, { date: newDate, pages: newPages }];
   } else {
     result = oldResult.map(({ date, pages }) => {
       if (
-        date.getDate() === new Date(newDate).getDate() &&
-        date.getMonth() === new Date(newPages).getMonth()
+        date.getUTCDate() === newDateParse.getUTCDate() &&
+        date.getUTCMonth() === newDateParse.getUTCMonth()
       ) {
-        return { date, pages: Number(pages) + Number(newPages) };
+        return { date: newDateParse, pages: Number(pages) + Number(newPages) };
       }
       return { date, pages };
     });
@@ -63,6 +64,7 @@ const updateStatistic = async (req, res) => {
     throw NotFound(`Statistic with id=${statisticId} not found!`);
   }
   const dateAdded = presentDate(statistic.result, date);
+
   const newResult = updateResult(statistic.result, date, pages, dateAdded);
 
   const training = await Training.findOne({
@@ -72,13 +74,13 @@ const updateStatistic = async (req, res) => {
   if (!training) {
     throw BadRequest(`Check the entered data(id-${statisticId}!`);
   }
-
+  const dateParse = new Date(date);
   if (
-    training.finish.getDate() < new Date(date).getDate() ||
-    training.start.getMonth() > new Date(date).getMonth() ||
-    training.finish.getMonth() < new Date(date).getMonth() ||
-    training.start.getFullYear() > new Date(date).getFullYear() ||
-    training.finish.getFullYear() < new Date(date).getFullYear()
+    training.finish.getUTCDate() < dateParse.getUTCDate() ||
+    training.start.getUTCMonth() > dateParse.getUTCMonth() ||
+    training.finish.getUTCMonth() < dateParse.getUTCMonth() ||
+    training.start.getUTCFullYear() > dateParse.getUTCFullYear() ||
+    training.finish.getUTCFullYear() < dateParse.getUTCFullYear()
   ) {
     throw BadRequest(
       `The date entered must be in a range start-${training.start} and finish-${training.finish}`
@@ -91,7 +93,7 @@ const updateStatistic = async (req, res) => {
     pages
   );
   if (leftPages > 0) {
-    throw Locked("All books have been already read");
+    throw Locked("Read pages exceed remaining pages");
   }
   const booksStatusUpdate = trainingListBook.filter(
     (books) => books.status && books.book
