@@ -38,9 +38,7 @@
   "paths": {
     "/api/auth/register": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "User registration",
         "requestBody": {
           "description": "Registration's object",
@@ -82,9 +80,7 @@
     },
     "/api/auth/current": {
       "get": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "User information",
         "security": [
           {
@@ -137,9 +133,7 @@
     },
     "/api/auth/login": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "User login",
         "security": [
           {
@@ -153,10 +147,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
+                "required": ["email", "password"],
                 "properties": {
                   "email": {
                     "type": "string",
@@ -239,9 +230,7 @@
     },
     "/api/auth/logout": {
       "get": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "User logout",
         "description": "Logout current user (invalide his token)",
         "security": [
@@ -273,9 +262,7 @@
     },
     "/api/auth/google": {
       "get": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Google account register or login",
         "description": "Frontend should receive user's name, email, token as query parameters",
         "responses": {
@@ -287,9 +274,7 @@
     },
     "/api/books/": {
       "post": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Add book into library",
         "security": [
           {
@@ -336,9 +321,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Get all books from  library",
         "security": [
           {
@@ -390,9 +373,7 @@
     },
     "/api/books/{bookId}": {
       "get": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Get one book from library",
         "parameters": [
           {
@@ -459,9 +440,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Delete one book from library",
         "parameters": [
           {
@@ -530,9 +509,7 @@
     },
     "/api/books/{bookId}/review": {
       "patch": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Change or add book's rating or resume",
         "parameters": [
           {
@@ -615,9 +592,7 @@
     },
     "/api/trainings/": {
       "post": {
-        "tags": [
-          "Training"
-        ],
+        "tags": ["Training"],
         "summary": "Adds new training",
         "security": [
           {
@@ -685,9 +660,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Training"
-        ],
+        "tags": ["Training"],
         "summary": "Gets training",
         "security": [
           {
@@ -753,11 +726,88 @@
         }
       }
     },
+    "/api/trainings/{trainingId}": {
+      "delete": {
+        "tags": ["Training"],
+        "summary": "Delete training",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "trainingId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Training id"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Success",
+                  "code": 200,
+                  "data": {
+                    "training": {
+                      "_id": "63360b66bfaa8472c16178da",
+                      "user": "6335e2e166c11e826954f4bd",
+                      "start": "2022-10-09T21:00:00.000Z",
+                      "finish": "2022-10-14T21:00:00.000Z",
+                      "books": [
+                        {
+                          "book": "6339822acaca80a8c8ea2ad4",
+                          "leftPages": 324,
+                          "status": false,
+                          "id": "63398812caca80a8c8ea2af1"
+                        },
+                        {
+                          "book": "6339822acaca80a8c8ea2ad4",
+                          "leftPages": 324,
+                          "status": false,
+                          "id": "63398812caca80a8c8ea2af1"
+                        }
+                      ],
+                      "statistics": "63398812caca80a8c8ea2ae8",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "invalid signature"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Training with id=63336b2725832bddeead4d10 not found!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/statistics/{statisticId}": {
       "get": {
-        "tags": [
-          "Statistics"
-        ],
+        "tags": ["Statistics"],
         "summary": "Gets statistics by Id",
         "parameters": [
           {
@@ -837,9 +887,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Statistics"
-        ],
+        "tags": ["Statistics"],
         "summary": "Updates statistics",
         "parameters": [
           {
@@ -864,10 +912,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "date",
-                  "pages"
-                ],
+                "required": ["date", "pages"],
                 "properties": {
                   "date": {
                     "type": "string",
@@ -946,6 +991,87 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": ["Statistics"],
+        "summary": "Deletes statistics by Id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "statisticId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Statistic id"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Success",
+                  "code": 200,
+                  "data": {
+                    "statistic": {
+                      "_id": "63398812caca80a8c8ea2ae8",
+                      "bookAmount": 4,
+                      "dayAmount": 5,
+                      "leftBooks": 4,
+                      "plan": [
+                        {
+                          "date": "2022-10-09T21:00:00.000Z",
+                          "pages": 266,
+                          "_id": "63398812caca80a8c8ea2ae9"
+                        },
+                        {
+                          "date": "2022-10-10T21:00:00.000Z",
+                          "pages": 266,
+                          "_id": "63398812caca80a8c8ea2aea"
+                        }
+                      ],
+                      "result": [
+                        {
+                          "date": "2022-10-19T21:00:00.000Z",
+                          "pages": 266,
+                          "_id": "6339d6665a09e3b2061109e9"
+                        }
+                      ],
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Not authorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Not found"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -953,12 +1079,7 @@
     "schemas": {
       "RegistrationRequest": {
         "type": "object",
-        "required": [
-          "email",
-          "password",
-          "name",
-          "repeatPassword"
-        ],
+        "required": ["email", "password", "name", "repeatPassword"],
         "properties": {
           "email": {
             "type": "string",
@@ -1033,12 +1154,7 @@
       },
       "BookAddRequest": {
         "type": "object",
-        "required": [
-          "title",
-          "author",
-          "publication",
-          "pages"
-        ],
+        "required": ["title", "author", "publication", "pages"],
         "properties": {
           "title": {
             "type": "string",
@@ -1056,11 +1172,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "plan",
-              "already",
-              "now"
-            ]
+            "enum": ["plan", "already", "now"]
           },
           "rating": {
             "type": "number"
@@ -1133,10 +1245,7 @@
       },
       "TrainingAddRequest": {
         "type": "object",
-        "required": [
-          "start",
-          "finish"
-        ],
+        "required": ["start", "finish"],
         "properties": {
           "start": {
             "type": "string",
@@ -1158,14 +1267,13 @@
         },
         "example": {
           "start": "10.10.2022",
-          "finish": "15.10.2022",
+          "finish": "10.15.2022",
           "books": [
             "6339822acaca80a8c8ea2ad4",
             "63398279caca80a8c8ea2ad8",
             "63398292caca80a8c8ea2adc",
             "633982accaca80a8c8ea2ae0"
-          ],
-          "statistics": 123456789
+          ]
         }
       }
     },
