@@ -76,7 +76,8 @@ const updateStatistic = async (req, res) => {
   }
   const dateParse = new Date(date);
   if (
-    training.finish.getUTCDate() < dateParse.getUTCDate() ||
+    (training.finish.getUTCDate() < dateParse.getUTCDate() &&
+      training.finish.getUTCMonth() === dateParse.getUTCMonth()) ||
     training.start.getUTCMonth() > dateParse.getUTCMonth() ||
     training.finish.getUTCMonth() < dateParse.getUTCMonth() ||
     training.start.getUTCFullYear() > dateParse.getUTCFullYear() ||
