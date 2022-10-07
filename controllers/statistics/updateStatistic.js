@@ -39,20 +39,21 @@ const changeTrainingBooksList = (books, pagesAmount) => {
       pages = 0;
       return pages;
     } else if (Number(pages) - Number(infBook.leftPages) < 0) {
-      arr[index].leftPages -= pages;
+      arr[index].leftPages -= Number(pages);
       arr[index].status = false;
       pages = 0;
       return pages;
     } else if (Number(pages) - Number(infBook.leftPages) > 0) {
+      pages -= Number(infBook.leftPages);
       arr[index].leftPages = 0;
       arr[index].status = true;
-      pages = pages - infBook.leftPages;
+
       return pages;
     }
     return pages;
   }, pagesAmount);
 
-  return { books };
+  return { leftPages, books };
 };
 
 const updateStatistic = async (req, res) => {
@@ -94,14 +95,14 @@ const updateStatistic = async (req, res) => {
   }
   const { books } = training;
 
-  const { books: trainingListBook } = changeTrainingBooksList(
+  const { leftPages, books: trainingListBook } = changeTrainingBooksList(
     books,
     Number(pages)
   );
 
-  // if (leftPages > 0) {
-  //   throw Locked("Read pages exceed remaining pages");
-  // }
+  if (leftPages > 0) {
+    throw Locked("Read pages exceed remaining pages");
+  }
   const booksStatusUpdate = trainingListBook.filter(
     (books) => books.status && books.book
   );
