@@ -52,7 +52,7 @@ const changeTrainingBooksList = (books, pagesAmount) => {
     return pages;
   }, pagesAmount);
 
-  return { leftPages, books };
+  return { books };
 };
 
 const updateStatistic = async (req, res) => {
@@ -94,14 +94,14 @@ const updateStatistic = async (req, res) => {
   }
   const { books } = training;
 
-  const { leftPages, books: trainingListBook } = changeTrainingBooksList(
+  const { books: trainingListBook } = changeTrainingBooksList(
     books,
     Number(pages)
   );
 
-  if (leftPages > 0) {
-    throw Locked("Read pages exceed remaining pages");
-  }
+  // if (leftPages > 0) {
+  //   throw Locked("Read pages exceed remaining pages");
+  // }
   const booksStatusUpdate = trainingListBook.filter(
     (books) => books.status && books.book
   );
