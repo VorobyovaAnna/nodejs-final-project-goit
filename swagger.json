@@ -264,9 +264,9 @@
       "get": {
         "tags": ["Auth"],
         "summary": "Google account register or login",
-        "description": "Frontend should receive user's name, email, token as query parameters",
+        "description": "Frontend should receive user's name, email, token as query parameters from URL",
         "responses": {
-          "309": {
+          "302": {
             "description": "Redirect to google"
           }
         }
@@ -1160,7 +1160,7 @@
             "type": "string",
             "description": "Book's title"
           },
-          "name": {
+          "author": {
             "type": "string",
             "description": "Author's name"
           },
