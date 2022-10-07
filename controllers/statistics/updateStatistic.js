@@ -65,7 +65,12 @@ const updateStatistic = async (req, res) => {
   }
   const dateAdded = presentDate(statistic.result, date);
 
-  const newResult = updateResult(statistic.result, date, pages, dateAdded);
+  const newResult = updateResult(
+    statistic.result,
+    date,
+    Number(pages),
+    dateAdded
+  );
 
   const training = await Training.findOne({
     user: id,
@@ -91,8 +96,9 @@ const updateStatistic = async (req, res) => {
 
   const { leftPages, books: trainingListBook } = changeTrainingBooksList(
     books,
-    pages
+    Number(pages)
   );
+
   if (leftPages > 0) {
     throw Locked("Read pages exceed remaining pages");
   }
