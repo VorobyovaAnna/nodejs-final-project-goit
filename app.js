@@ -2,7 +2,6 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
-// const path = require("path");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
@@ -25,9 +24,6 @@ app.use("/api/books", bookRouter);
 app.use("/api/trainings", trainingRouter);
 app.use("/api/statistics", statisticRouter);
 
-// app.use("/link", (_, res) => {
-//   res.sendFile(path.join(__dirname, "./public/link.html"));
-// });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
